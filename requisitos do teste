@@ -1,0 +1,31 @@
+Primeira parte
+é necessário fazer um endpoint com FastAPI
+utilizando LangChain com Pandas Agent para 
+ler um arquivo csv chamado sales.csl com 
+o seguinte formato:
+date	product	quantity	total
+2023-01-01	Product A	2	200
+2023-01-03	Product B	1	120
+2023-01-05	Product A	1	100
+2023-01-10	Product C	3	450
+a api receberá uma frase, deverá interpretar
+e enviar de volta alguma das informações
+que estão nesta tabela. 
+Possuir uma rota /ask que receba uma pergunta e retorne uma resposta com base no conteúdo do CSV.
+
+
+
+
+O frontend deve:
+
+Ser feito com Next.js.
+Ter uma interface simples estilo chat (campo de input e botão de enviar).
+Enviar perguntas para a API e exibir as respostas em tempo real.
+O projeto deve estar organizado com boas práticas e conter instruções claras de execução no README.md.
+
+🧠 Exemplos de perguntas que o usuário pode fazer
+"Qual foi o total de vendas?"
+"Quais foram os produtos mais vendidos?"
+"Qual foi o mês com maior receita?"
+"Qual o ticket médio por produto?"
+
