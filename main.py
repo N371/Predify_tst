@@ -1,4 +1,5 @@
 from fastapi import FastAPI, UploadFile, Form, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
 from io import StringIO
 import pandas as pd
 import ollama
@@ -16,6 +17,19 @@ CSV_PATH = os.path.join(BASE_DIR, 'sales.csv')
 OLLAMA_MODEL = "phi3"
 
 app = FastAPI()
+
+origins = [
+    "http://localhost:3000",  # A origem do seu frontend Next.js
+    # Adicione outras origens se necessário (por exemplo, para produção)
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 def install_missing_dependencies():
     """Instala dependências opcionais se necessário"""
@@ -43,7 +57,7 @@ async def upload_file(file: UploadFile):
     try:
         contents = await file.read()
         df = pd.read_csv(StringIO(contents.decode('utf-8')))
-        
+
         required_columns = {'date', 'product', 'quantity', 'total'}
         if missing := required_columns - set(df.columns):
             raise ValueError(f"Colunas faltando: {missing}")
@@ -57,21 +71,21 @@ async def upload_file(file: UploadFile):
 @app.post("/ask")  # Alterado de /analyze para /ask
 async def ask(question: str = Form(...)):  # Renomeado de analyze para ask
     install_missing_dependencies()
-    
+
     if not os.path.exists(CSV_PATH):
         raise HTTPException(404, "Arquivo não encontrado. Faça upload primeiro.")
-    
+
     try:
         df = pd.read_csv(CSV_PATH)
         try:
             data_preview = df.head().to_markdown()
         except:
             data_preview = df.head().to_string()
-        
+
         context = f"""
         Analise estes dados de vendas:
         {data_preview}
-        
+
         Pergunta: {question}
         Responda com valores exatos quando possível.
         """
@@ -92,7 +106,7 @@ async def health_check():
             "ollama_running": False,
             "model_available": False
         }
-        
+
         try:
             models = ollama.list()['models']
             status.update({
@@ -101,7 +115,7 @@ async def health_check():
             })
         except:
             pass
-            
+
         return status
     except Exception as e:
         logger.error(f"Health check error: {str(e)}")
