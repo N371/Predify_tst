@@ -19,8 +19,7 @@ OLLAMA_MODEL = "phi3"
 app = FastAPI()
 
 origins = [
-    "http://localhost:3000",  # A origem do seu frontend Next.js
-    # Adicione outras origens se necessário (por exemplo, para produção)
+    "http://localhost:3000",
 ]
 
 app.add_middleware(
@@ -32,7 +31,6 @@ app.add_middleware(
 )
 
 def install_missing_dependencies():
-    """Instala dependências opcionais se necessário"""
     try:
         import tabulate
     except ImportError:
@@ -68,8 +66,8 @@ async def upload_file(file: UploadFile):
         logger.error(f"Upload error: {str(e)}\n{traceback.format_exc()}")
         raise HTTPException(400, detail=str(e))
 
-@app.post("/ask")  # Alterado de /analyze para /ask
-async def ask(question: str = Form(...)):  # Renomeado de analyze para ask
+@app.post("/ask")
+async def ask(question: str = Form(...)):
     install_missing_dependencies()
 
     if not os.path.exists(CSV_PATH):
@@ -99,7 +97,6 @@ async def ask(question: str = Form(...)):  # Renomeado de analyze para ask
 
 @app.get("/health")
 async def health_check():
-    """Endpoint de verificação de saúde"""
     try:
         status = {
             "csv_loaded": os.path.exists(CSV_PATH),
