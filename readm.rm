@@ -1,0 +1,34 @@
+Pandas Agent Demo Test
+Resposta
+Arquivo usado: sales.csv
+
+Funcionalidades Esperadas
+Backend e Frontend
+• Foram utilizados LangChain com Pandas Agent
+• O arquivo CSV carregado foi o sales.csv
+• A rota foi definida como /ask
+• Foi usado o Lamma instalado localmente (phi3)
+• Foi utilizado Next.js
+• A interface usada foi no estilo chat
+• As imagens podem ser vistas em arquivos .png dentro da pasta test_front, no endereço do repositório Git de resposta
+• As perguntas são respondidas conforme o algoritmo phi3 do Lamma
+
+Foram evitadas todas as bibliotecas desnecessárias.
+O código foi gerado em conjunto com Gemini.
+
+Como executar
+Backend
+
+bash
+Copiar
+Editar
+cd test  
+python -m venv venv && source venv/bin/activate  
+python3 main.py  # (uvicorn interno)
+Frontend
+
+bash
+Copiar
+Editar
+cd /app/test_front  
+npm run dev
